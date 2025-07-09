@@ -19,7 +19,7 @@ public class Feature {
     @Column(name = "name", nullable = false)
     private String name;
 
-    @ManyToMany(mappedBy = "features")
+    @ManyToMany(mappedBy = "features", fetch = FetchType.LAZY)
     private Set<Property> properties;
 
 }

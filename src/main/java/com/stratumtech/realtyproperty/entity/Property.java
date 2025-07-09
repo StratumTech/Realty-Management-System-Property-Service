@@ -87,7 +87,7 @@ public  class Property implements BaseEntity {
 
     @ToString.Exclude
     @EqualsAndHashCode.Exclude
-    @ManyToMany
+    @ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JoinTable(
             name = "properties_to_features",
             joinColumns = @JoinColumn(name = "property_uuid"),
@@ -95,4 +95,8 @@ public  class Property implements BaseEntity {
     )
     private Set<Feature> features;
 
+    @ToString.Exclude
+    @EqualsAndHashCode.Exclude
+    @OneToMany(mappedBy = "property", cascade = CascadeType.ALL, orphanRemoval = true)
+    private Set<PropertyImage> images;
 }
