@@ -86,6 +86,9 @@ public  class Property implements BaseEntity {
     @Column(name = "owner_phone")
     private String ownerPhone;
 
+    @Column(name = "paid", nullable = false)
+    private Boolean paid;
+
     @ToString.Exclude
     @EqualsAndHashCode.Exclude
     @ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
