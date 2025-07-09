@@ -10,7 +10,7 @@ import jakarta.persistence.*;
 
 @Data
 @Table(name = "properties")
-public final class Property {
+public final class Property implements BaseEntity {
 
     @Id
     @Column(name = "property_uuid")

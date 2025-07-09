@@ -1,17 +1,18 @@
 package com.stratumtech.realtyproperty.controller;
 
-import com.stratumtech.realtyproperty.dto.PropertyChangeRequest;
-import com.stratumtech.realtyproperty.dto.PropertyDTO;
-import com.stratumtech.realtyproperty.dto.PropertySaveRequest;
-import lombok.RequiredArgsConstructor;
+import java.util.List;
+import java.util.UUID;
+
 import lombok.extern.slf4j.Slf4j;
+import lombok.RequiredArgsConstructor;
+
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import com.stratumtech.realtyproperty.dto.PropertyDTO;
 import com.stratumtech.realtyproperty.service.PropertyService;
-
-import java.util.List;
-import java.util.UUID;
+import com.stratumtech.realtyproperty.dto.PropertySaveRequest;
+import com.stratumtech.realtyproperty.dto.PropertyChangeRequest;
 
 @Slf4j
 @RequiredArgsConstructor
