@@ -2,14 +2,15 @@ package com.stratumtech.realtyproperty.entity;
 
 import java.util.Set;
 import java.util.UUID;
+import java.util.List;
 import java.sql.Timestamp;
 import java.math.BigDecimal;
 
 import jakarta.persistence.*;
 
 import lombok.Data;
-import lombok.EqualsAndHashCode;
 import lombok.ToString;
+import lombok.EqualsAndHashCode;
 
 @Data
 @Entity
@@ -99,4 +100,9 @@ public  class Property implements BaseEntity {
     @EqualsAndHashCode.Exclude
     @OneToMany(mappedBy = "property", cascade = CascadeType.ALL, orphanRemoval = true)
     private Set<PropertyImage> images;
+
+    @ToString.Exclude
+    @EqualsAndHashCode.Exclude
+    @OneToMany(mappedBy = "property", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<CalendarEntry> calendarEntries;
 }

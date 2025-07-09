@@ -1,16 +1,17 @@
 package com.stratumtech.realtyproperty.entity;
 
-import jakarta.persistence.*;
-import lombok.Data;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
-
 import java.sql.Timestamp;
+
+import lombok.Data;
+import lombok.ToString;
+import lombok.EqualsAndHashCode;
+
+import jakarta.persistence.*;
 
 @Data
 @Entity
 @Table(name = "property_images_metadata")
-public class PropertyImage {
+public class PropertyImage implements BaseEntity {
 
     @Id
     @Column(name = "image_id", nullable = false)
