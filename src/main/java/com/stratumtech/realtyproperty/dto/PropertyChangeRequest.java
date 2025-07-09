@@ -1,4 +1,5 @@
 package com.stratumtech.realtyproperty.dto;
 
-public class PropertyChangeRequest {
+public final class PropertyChangeRequest {
+
 }
