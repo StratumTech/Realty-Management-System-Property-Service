@@ -19,6 +19,7 @@ CREATE TABLE properties (
     owner_name VARCHAR(255),
     owner_surname VARCHAR(255),
     owner_phone VARCHAR(255),
+    paid BOOL NOT NULL,
     PRIMARY KEY(property_uuid)
 );
 
