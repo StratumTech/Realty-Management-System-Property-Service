@@ -1,60 +1,64 @@
 package com.stratumtech.realtyproperty.entity;
 
+import java.util.Set;
 import java.util.UUID;
 import java.sql.Timestamp;
 import java.math.BigDecimal;
 
-import lombok.Data;
-
 import jakarta.persistence.*;
 
+import lombok.Data;
+import lombok.EqualsAndHashCode;
+import lombok.ToString;
+
 @Data
+@Entity
 @Table(name = "properties")
-public final class Property implements BaseEntity {
+public  class Property implements BaseEntity {
 
     @Id
-    @Column(name = "property_uuid")
+    @Column(name = "property_uuid", nullable = false)
     @GeneratedValue(strategy = GenerationType.UUID)
-    private final UUID id;
+    private UUID id;
 
     @Column(name = "agent_uuid", nullable = false)
-    private final UUID agentUuid;
+    private UUID agentUuid;
 
     @Column(name = "region_id", nullable = false)
-    private final Long regionId;
+    private Long regionId;
 
     @Column(name = "title", nullable = false)
-    private final String title;
+    private String title;
 
     @Column(name = "type", nullable = false)
-    private final String type;
+    private String type;
 
     @Column(name = "deal_type", nullable = false)
-    private final String dealType;
+    private String dealType;
 
     @Column(name = "price", nullable = false)
-    private final BigDecimal price;
+    private BigDecimal price;
 
     @Column(name = "rooms", nullable = false)
-    private final Integer rooms;
+    private Integer rooms;
 
     @Column(name = "area", nullable = false)
-    private final Double area;
+    private Double area;
 
     @Column(name = "address", nullable = false)
-    private final String address;
+    private String address;
 
     @Column(name = "description")
-    private final String description;
+    private String description;
 
     @Column(name = "layout", nullable = false)
-    private final String layout;
+    private String layout;
 
     @Column(name = "latitude", nullable = false)
-    private final Double latitude;
+    private Double latitude;
 
     @Column(name = "longitude", nullable = false)
-    private final Double longitude;
+    private Double longitude;
 
     @Column(
             name = "created_at",
@@ -62,7 +66,7 @@ public final class Property implements BaseEntity {
             updatable = false,
             columnDefinition="TIMESTAMP DEFAULT CURRENT_TIMESTAMP"
     )
-    private final Timestamp createdAt;
+    private Timestamp createdAt;
 
     @Column(
             name = "updated_at",
@@ -70,14 +74,25 @@ public final class Property implements BaseEntity {
             updatable = false,
             columnDefinition="TIMESTAMP DEFAULT CURRENT_TIMESTAMP"
     )
-    private final Timestamp updatedAt;
+    private Timestamp updatedAt;
 
     @Column(name = "owner_name")
-    private final String ownerName;
+    private String ownerName;
 
     @Column(name = "owner_surname")
-    private final String ownerSurname;
+    private String ownerSurname;
 
     @Column(name = "owner_phone")
-    private final String ownerPhone;
+    private String ownerPhone;
+
+    @ToString.Exclude
+    @EqualsAndHashCode.Exclude
+    @ManyToMany
+    @JoinTable(
+            name = "properties_to_features",
+            joinColumns = @JoinColumn(name = "property_uuid"),
+            inverseJoinColumns = @JoinColumn(name = "feature_id")
+    )
+    private Set<Feature> features;
+
 }
