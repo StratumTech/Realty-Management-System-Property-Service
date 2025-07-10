@@ -1,12 +1,13 @@
 package com.stratumtech.realtyproperty.dto.mapper;
 
-import com.stratumtech.realtyproperty.entity.PropertyImage;
-import org.mapstruct.Mapper;
-import org.mapstruct.factory.Mappers;
-
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
+
+import org.mapstruct.Mapper;
+import org.mapstruct.factory.Mappers;
+
+import com.stratumtech.realtyproperty.entity.PropertyImage;
 
 @Mapper(componentModel = "spring")
 public interface PropertyImageMapper {

@@ -1,10 +1,11 @@
 package com.stratumtech.realtyproperty.dto.mapper;
 
-import com.stratumtech.realtyproperty.dto.CalendarEntryDTO;
-import com.stratumtech.realtyproperty.entity.CalendarEntry;
+import java.util.List;
+
 import org.mapstruct.*;
 
-import java.util.List;
+import com.stratumtech.realtyproperty.dto.CalendarEntryDTO;
+import com.stratumtech.realtyproperty.entity.CalendarEntry;
 
 @Mapper(componentModel = "spring")
 public interface CalendarEntryMapper {

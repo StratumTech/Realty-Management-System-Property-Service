@@ -1,11 +1,12 @@
 package com.stratumtech.realtyproperty.dto.mapper;
 
-import com.stratumtech.realtyproperty.entity.Feature;
+import java.util.Set;
+import java.util.stream.Collectors;
+
 import org.mapstruct.Mapper;
 import org.mapstruct.factory.Mappers;
 
-import java.util.Set;
-import java.util.stream.Collectors;
+import com.stratumtech.realtyproperty.entity.Feature;
 
 @Mapper(componentModel = "spring")
 public interface FeatureMapper {
