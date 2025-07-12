@@ -3,9 +3,6 @@ package com.stratumtech.realtyproperty.service;
 import java.util.*;
 import java.util.stream.Collectors;
 
-import com.stratumtech.realtyproperty.entity.Feature;
-import com.stratumtech.realtyproperty.repository.FeatureRepository;
-import com.stratumtech.realtyproperty.repository.PropertyImageRepository;
 import lombok.extern.slf4j.Slf4j;
 import lombok.RequiredArgsConstructor;
 
@@ -19,8 +16,12 @@ import com.stratumtech.realtyproperty.dto.PropertyDTO;
 import com.stratumtech.realtyproperty.dto.mapper.PropertyMapper;
 import com.stratumtech.realtyproperty.dto.request.PropertyCreateRequest;
 
+import com.stratumtech.realtyproperty.entity.Feature;
 import com.stratumtech.realtyproperty.entity.Property;
+
+import com.stratumtech.realtyproperty.repository.FeatureRepository;
 import com.stratumtech.realtyproperty.repository.PropertyRepository;
+import com.stratumtech.realtyproperty.repository.PropertyImageRepository;
 
 @Slf4j
 @Service
