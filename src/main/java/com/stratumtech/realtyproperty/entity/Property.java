@@ -3,6 +3,7 @@ package com.stratumtech.realtyproperty.entity;
 import java.util.Set;
 import java.util.UUID;
 import java.util.List;
+import java.time.Instant;
 import java.sql.Timestamp;
 import java.math.BigDecimal;
 
@@ -61,20 +62,10 @@ public  class Property implements BaseEntity {
     @Column(name = "longitude", nullable = false)
     private Double longitude;
 
-    @Column(
-            name = "created_at",
-            insertable = false,
-            updatable = false,
-            columnDefinition="TIMESTAMP DEFAULT CURRENT_TIMESTAMP"
-    )
+    @Column(name = "created_at", updatable = false)
     private Timestamp createdAt;
 
-    @Column(
-            name = "updated_at",
-            insertable = false,
-            updatable = false,
-            columnDefinition="TIMESTAMP DEFAULT CURRENT_TIMESTAMP"
-    )
+    @Column(name = "updated_at")
     private Timestamp updatedAt;
 
     @Column(name = "owner_name")
@@ -89,9 +80,22 @@ public  class Property implements BaseEntity {
     @Column(name = "paid", nullable = false)
     private Boolean paid;
 
+    @PrePersist
+    protected void onCreate() {
+        Timestamp now = Timestamp.from(Instant.now());
+        createdAt = now;
+        updatedAt = now;
+    }
+
+    @PreUpdate
+    protected void onUpdate() {
+        updatedAt = Timestamp.from(Instant.now());
+    }
+
     @ToString.Exclude
     @EqualsAndHashCode.Exclude
-    @ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @ManyToMany(fetch = FetchType.LAZY,
+            cascade = { CascadeType.MERGE })
     @JoinTable(
             name = "properties_to_features",
             joinColumns = @JoinColumn(name = "property_uuid"),
@@ -102,7 +106,7 @@ public  class Property implements BaseEntity {
     @ToString.Exclude
     @EqualsAndHashCode.Exclude
     @OneToMany(mappedBy = "property", cascade = CascadeType.ALL, orphanRemoval = true)
-    private Set<PropertyImage> images;
+    private List<PropertyImage> images;
 
     @ToString.Exclude
     @EqualsAndHashCode.Exclude

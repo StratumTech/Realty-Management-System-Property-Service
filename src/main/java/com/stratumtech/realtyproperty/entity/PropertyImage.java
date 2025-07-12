@@ -1,6 +1,7 @@
 package com.stratumtech.realtyproperty.entity;
 
 import java.sql.Timestamp;
+import java.time.Instant;
 
 import lombok.Data;
 import lombok.ToString;
@@ -20,7 +21,6 @@ public class PropertyImage implements BaseEntity {
 
     @ToString.Exclude
     @EqualsAndHashCode.Exclude
-    @Column(name = "property_uuid")
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "property_uuid", nullable = false)
     private Property property;
@@ -28,11 +28,11 @@ public class PropertyImage implements BaseEntity {
     @Column(name = "file_url", nullable = false)
     private String fileUrl;
 
-    @Column(
-            name = "created_at",
-            insertable = false,
-            updatable = false,
-            columnDefinition="TIMESTAMP DEFAULT CURRENT_TIMESTAMP"
-    )
+    @Column(name = "created_at", updatable = false)
     private Timestamp createdAt;
+
+    @PrePersist
+    protected void onCreate() {
+        createdAt = Timestamp.from(Instant.now());
+    }
 }
