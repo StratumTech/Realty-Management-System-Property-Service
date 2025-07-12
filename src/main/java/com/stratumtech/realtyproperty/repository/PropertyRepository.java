@@ -6,6 +6,6 @@ import org.springframework.data.repository.CrudRepository;
 
 import com.stratumtech.realtyproperty.entity.Property;
 
-public interface PropertyRepository extends CrudRepository<UUID, Property> {
+public interface PropertyRepository extends CrudRepository<Property, UUID> {
 
 }

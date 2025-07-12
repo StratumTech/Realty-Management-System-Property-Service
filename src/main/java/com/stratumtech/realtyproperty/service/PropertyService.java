@@ -11,7 +11,7 @@ public interface PropertyService {
 
     Optional<PropertyDTO> findPropertyByUuid(UUID propertyUuid);
 
-    Optional<PropertyDTO> savePropertyByRequestDetails(UUID userUuid, PropertyCreateRequest saveRequestDetails);
+    Optional<PropertyDTO> savePropertyByRequestDetails(PropertyCreateRequest saveRequestDetails);
 
     Optional<PropertyDTO> changePropertyByUuid(UUID propertyUuid, Map<String, Object> changes);
 
