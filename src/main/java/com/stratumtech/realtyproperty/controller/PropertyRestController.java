@@ -10,6 +10,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.security.core.Authentication;
 
 import com.stratumtech.realtyproperty.dto.PropertyDTO;
 import com.stratumtech.realtyproperty.service.PropertyService;
@@ -23,30 +24,33 @@ import com.stratumtech.realtyproperty.exception.FailedToUpdatePropertyException;
 import com.stratumtech.realtyproperty.exception.FailedToCreateNewPropertyException;
 
 @Slf4j
+@RestController
 @RequiredArgsConstructor
-@RestController(value = "/api/v1")
+@RequestMapping(value = "/api/v1")
 public class PropertyRestController {
 
     private final PropertyService propertyService;
 
     @RequestMapping(value = "/properties", method = RequestMethod.POST)
     public ResponseEntity<PropertyDTO> createProperty(@Valid @RequestBody PropertyCreateRequest createRequestDetails,
-                                                      @RequestHeader(name = "X-USER") UUID userUuid){
+                                                      Authentication authentication){
         if(createRequestDetails == null){
             log.error("Create property request is null");
             throw new BadRequestException("Create property cannot be null");
         }
 
-        if(userUuid == null){
-            log.error("User UUID is null");
-            throw new BadRequestException("User UUID cannot be null");
+        final UUID userUuid = UUID.fromString((String) authentication.getPrincipal());
+
+        if(userUuid.compareTo(createRequestDetails.getAgentUuid()) != 0){
+            return new ResponseEntity<>(HttpStatus.FORBIDDEN);
         }
 
         Optional<PropertyDTO> createdProperty =
-                propertyService.savePropertyByRequestDetails(userUuid, createRequestDetails);
+                propertyService.savePropertyByRequestDetails(createRequestDetails);
         if(createdProperty.isEmpty()){
-            log.error("Could not create property for user: {}", userUuid);
-            throw new FailedToCreateNewPropertyException(userUuid);
+            var agentUuid = createRequestDetails.getAgentUuid();
+            log.error("Could not create property for user: {}", agentUuid);
+            throw new FailedToCreateNewPropertyException(agentUuid);
         }
 
         return ResponseEntity.status(HttpStatus.CREATED).body(createdProperty.get());
@@ -70,7 +74,10 @@ public class PropertyRestController {
 
     @RequestMapping(value = "/properties/{uuid}", method = RequestMethod.PUT)
     public ResponseEntity<PropertyDTO> updateProperty(@PathVariable(name = "uuid") UUID propertyUuid,
-                                            @Valid @RequestBody PropertyUpdateRequest updateRequestDetails){
+                                                      @Valid @RequestBody PropertyUpdateRequest updateRequestDetails,
+                                                      Authentication authentication){
+        final UUID userUuid = UUID.fromString((String) authentication.getPrincipal());
+
         if(propertyUuid == null){
             log.error("UUID is null");
             throw new BadRequestException("Property UUID cannot be null");
@@ -80,6 +87,15 @@ public class PropertyRestController {
             log.error("Update request details is null");
             throw new BadRequestException("Update request details cannot be null");
         }
+
+        Optional<PropertyDTO> propertyByUuid =
+                propertyService.findPropertyByUuid(propertyUuid);
+
+        if(propertyByUuid.isPresent()){
+            if(propertyByUuid.get().getAgentUuid().compareTo(userUuid) != 0){
+                return new ResponseEntity<>(HttpStatus.FORBIDDEN);
+            }
+        }else throw new PropertyNotFoundException(propertyUuid);
 
         final var changes = updateRequestDetails.getChanges();
         if(changes == null){
@@ -98,11 +114,23 @@ public class PropertyRestController {
     }
 
     @RequestMapping(value = "/properties/{uuid}", method = RequestMethod.DELETE)
-    public ResponseEntity<?> deleteProperty(@PathVariable(name = "uuid") UUID propertyUuid){
+    public ResponseEntity<?> deleteProperty(@PathVariable(name = "uuid") UUID propertyUuid,
+                                            Authentication authentication){
+        final UUID userUuid = UUID.fromString((String) authentication.getPrincipal());
+
         if(propertyUuid == null){
             log.error("UUID is null");
             throw new BadRequestException("Property UUID cannot be null");
         }
+
+        Optional<PropertyDTO> propertyByUuid =
+                propertyService.findPropertyByUuid(propertyUuid);
+
+        if(propertyByUuid.isPresent()){
+            if(propertyByUuid.get().getAgentUuid().compareTo(userUuid) != 0){
+                return new ResponseEntity<>(HttpStatus.FORBIDDEN);
+            }
+        }else throw new PropertyNotFoundException(propertyUuid);
 
         boolean success =
                 propertyService.removePropertyByUuid(propertyUuid);
