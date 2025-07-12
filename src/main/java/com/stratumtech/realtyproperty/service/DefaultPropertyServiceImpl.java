@@ -46,9 +46,14 @@ public class DefaultPropertyServiceImpl implements PropertyService {
     @Override
     public Optional<PropertyDTO> savePropertyByRequestDetails(PropertyCreateRequest saveRequestDetails) {
         Property entityToSave = propertyMapper.toEntity(saveRequestDetails);
-        entityToSave.setPaid(true);
-        entityToSave.getImages().forEach(image -> image.setProperty(entityToSave));
+        log.debug("Convert save request details to property");
 
+        entityToSave.setPaid(true);
+
+        entityToSave.getImages().forEach(image -> image.setProperty(entityToSave));
+        log.debug("Set for each image link to property");
+
+        log.debug("Search exists features");
         Set<Feature> managedFeatures = entityToSave.getFeatures().stream()
                 .map(Feature::getName)
                 .map(String::trim)
@@ -65,9 +70,11 @@ public class DefaultPropertyServiceImpl implements PropertyService {
                 .filter(f -> f.getId() == null)
                 .toList();
         featureRepository.saveAll(newOnes);
+        log.debug("Save new features to database");
 
         entityToSave.setFeatures(managedFeatures);
         Property saved = propertyRepository.save(entityToSave);
+        log.debug("Save new property to database");
 
         return Optional.of(propertyMapper.toDTO(saved));
     }
@@ -77,7 +84,9 @@ public class DefaultPropertyServiceImpl implements PropertyService {
         return propertyRepository.findById(propertyUuid)
                 .map(property -> {
                     applyChanges(property, changes);
+                    log.debug("Apply changes to existing property");
                     Property saved = propertyRepository.save(property);
+                    log.debug("Save changes to database");
                     return propertyMapper.toDTO(saved);
                 });
     }
@@ -87,6 +96,7 @@ public class DefaultPropertyServiceImpl implements PropertyService {
         return propertyRepository.findById(propertyUuid)
                 .map(property -> {
                     propertyRepository.delete(property);
+                    log.debug("Delete property from database");
                     return true;
                 })
                 .orElse(false);
