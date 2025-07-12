@@ -3,12 +3,13 @@ package com.stratumtech.realtyproperty.dto;
 import java.util.Set;
 import java.util.List;
 import java.util.UUID;
+import java.util.HashSet;
 import java.sql.Timestamp;
 import java.math.BigDecimal;
 
 import lombok.Getter;
 import lombok.Builder;
-import lombok.Singular;
+import lombok.AccessLevel;
 
 @Getter
 @Builder
@@ -34,20 +35,23 @@ public final class PropertyDTO {
     private final String ownerPhone;
     private final Boolean paid;
 
-    @Singular("feature")
-    private final Set<FeatureDTO> features;
+    @Builder.Default
+    @Getter(AccessLevel.NONE)
+    private Set<String> features = new HashSet<>();
 
-    @Singular("image")
-    private final List<PropertyImageDTO> images;
+    @Builder.Default
+    @Getter(AccessLevel.NONE)
+    private List<String> images = List.of();
 
-    @Singular("calendarEntry")
-    private final List<CalendarEntryDTO> calendarEntries;
+    @Builder.Default
+    @Getter(AccessLevel.NONE)
+    private List<CalendarEntryDTO> calendarEntries = List.of();
 
-    public Set<FeatureDTO> getFeatureIds() {
+    public Set<String> getFeatures() {
         return Set.copyOf(features);
     }
 
-    public List<PropertyImageDTO> getImageUrls() {
+    public List<String> getImages() {
         return List.copyOf(images);
     }
 

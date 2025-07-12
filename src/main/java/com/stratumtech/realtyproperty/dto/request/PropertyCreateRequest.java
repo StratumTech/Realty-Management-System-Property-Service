@@ -1,14 +1,13 @@
 package com.stratumtech.realtyproperty.dto.request;
 
 import java.util.List;
+import java.util.Set;
 import java.util.UUID;
 import java.math.BigDecimal;
 
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import jakarta.validation.constraints.*;
-
-import com.stratumtech.realtyproperty.dto.FeatureDTO;
 
 @Getter
 @RequiredArgsConstructor
@@ -45,13 +44,16 @@ public final class PropertyCreateRequest {
         private final Double area;
 
         @NotNull
-        private final List<FeatureDTO> features;
+        private final Set<String> features;
 
         @NotNull
         private final String address;
 
         @NotNull
         private final String description;
+
+        @NotNull
+        private final List<String> images;
 
         @NotNull
         @NotEmpty
