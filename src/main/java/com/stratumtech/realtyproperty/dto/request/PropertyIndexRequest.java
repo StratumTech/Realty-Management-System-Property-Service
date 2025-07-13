@@ -24,5 +24,5 @@ public final class PropertyIndexRequest {
     private final String address;
     private final List<String> images;
     private final String layout;
-    private final Timestamp createAt;
+    private final Timestamp createdAt;
 }
