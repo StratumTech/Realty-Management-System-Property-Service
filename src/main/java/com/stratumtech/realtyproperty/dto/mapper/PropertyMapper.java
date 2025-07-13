@@ -6,6 +6,7 @@ import org.mapstruct.InheritInverseConfiguration;
 
 import com.stratumtech.realtyproperty.entity.Property;
 import com.stratumtech.realtyproperty.dto.PropertyDTO;
+import com.stratumtech.realtyproperty.dto.request.PropertyIndexRequest;
 import com.stratumtech.realtyproperty.dto.request.PropertyCreateRequest;
 
 @Mapper(
@@ -23,7 +24,7 @@ public interface PropertyMapper {
     @Mapping(source = "features",        target = "features",        qualifiedByName = "mapFeaturesInverse")
     @Mapping(source = "images",          target = "images",          qualifiedByName = "mapImagesInverse")
     @Mapping(source = "calendarEntries", target = "calendarEntries", qualifiedByName = "mapCalendarEntriesInverse")
-    Property toEntity(PropertyDTO dto);
+    Property toEntity(PropertyDTO propertyDTO);
 
     @InheritInverseConfiguration
     @Mapping(target = "id",               ignore = true)
@@ -34,4 +35,7 @@ public interface PropertyMapper {
     @Mapping(source = "features",        target = "features",        qualifiedByName = "mapFeaturesInverse")
     @Mapping(source = "images",          target = "images",          qualifiedByName = "mapImagesInverse")
     Property toEntity(PropertyCreateRequest request);
+
+    @Mapping(source = "id", target = "propertyId")
+    PropertyIndexRequest toPropertyIndexRequest(PropertyDTO propertyDTO);
 }

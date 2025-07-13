@@ -5,12 +5,13 @@ import java.util.Optional;
 
 import jakarta.validation.Valid;
 import lombok.extern.slf4j.Slf4j;
-import lombok.RequiredArgsConstructor;
+
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.security.core.Authentication;
+import org.springframework.beans.factory.annotation.Qualifier;
 
 import com.stratumtech.realtyproperty.dto.PropertyDTO;
 import com.stratumtech.realtyproperty.service.PropertyService;
@@ -25,11 +26,14 @@ import com.stratumtech.realtyproperty.exception.FailedToCreateNewPropertyExcepti
 
 @Slf4j
 @RestController
-@RequiredArgsConstructor
 @RequestMapping(value = "/api/v1")
 public class PropertyRestController {
 
     private final PropertyService propertyService;
+
+    private PropertyRestController(@Qualifier("indexedPropertyServiceImpl") PropertyService propertyService) {
+        this.propertyService = propertyService;
+    }
 
     @RequestMapping(value = "/properties", method = RequestMethod.POST)
     public ResponseEntity<PropertyDTO> createProperty(@Valid @RequestBody PropertyCreateRequest createRequestDetails,
