@@ -1,4 +1,4 @@
-version: '3.8'
+version: '3.9'
 
 services:
   postgres:
@@ -17,6 +17,17 @@ services:
       interval: 5s
       retries: 5
       start_period: 10s
+
+  service-property:
+    build: .
+    env_file:
+      - .env
+    image: realty-management-system-property-service
+    container_name: realty-management-property-service
+    depends_on:
+      - postgres
+    ports:
+      - "8082:8082"
 
 volumes:
   postgres_storage:
